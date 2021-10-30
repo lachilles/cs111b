@@ -1,54 +1,83 @@
-/* Lianne Achilles
- Muni ridership calculator
- CS111B
- This program takes survey data inputs about Muni riders, and outputs a summary of that data.
+/* Programming Exercise for Chapters 4-6: Days Out, for CS 111B
+   Written by Lianne Achilles
+   Calculates the average number of days a company's employees are absent
 */
 package com.company;
 import java.util.Scanner;
 
-class Main
+public class Main
 {
-    public static void main(String[] args)
+    static Scanner keyIn = new Scanner(System.in);
+
+    public static void main(String args[])
+    {
+        int   employees,            // The number of employees
+                daysAbsent;           // Total days misssed by all employees
+
+        employees = getNumEmps();
+        daysAbsent = getDaysMissed(employees);
+        showAvgDaysMissed(employees, daysAbsent);
+    } // End of main function
+
+    //*******************************************************************
+    // Function getNumEmps. This function asks the user to enter        *
+    // the number of employees in the company. Validation is performed  *
+    // to verify at least one employee, the value entered is            *
+    // then returned to function main.                                  *
+    //*******************************************************************
+    static int getNumEmps()
     {
         Scanner scan = new Scanner (System.in);
-        String muniLine;
-        int daysSurveyed, numRiders;
-        double avgRiders;
+        int employees;
 
-        Scanner inputReader = new Scanner(System.in); // instantiate a new Scanner object for input
+        System.out.print("How many employees are there in the company? ");
+        employees = scan.nextInt();
+        if (employees > 0)
+        {
+            return employees;
+        }
+        else
+        {
+            System.out.println("The number of employees must be one or greater. Please re-enter:");
+        }
 
-        System.out.print("Welcome to the Muni Ridership Calculator. \n");
-        System.out.print("Which Muni line did you survey? ");
-        muniLine = inputReader.nextLine();
-        System.out.print("How many days did you survey ridership? ");
-        daysSurveyed = scan.nextInt();
-        System.out.print("How many riders did you count? ");
-        numRiders = scan.nextInt();
+        return employees;
+    } // End of function getNumEmps
 
-        avgRiders = (double)numRiders / daysSurveyed;
-        // The above "(double)" type cast is needed to get an accurate answer (not always an integer)
+    //*******************************************************************
+    // Function daysMissed. Accepts as an argument the number of        *
+    // employees in the company. User is asked to enter the             *
+    // number of days missed by each employee. Validation performed to  *
+    // confirm negative number is not entered. The total days missed    *
+    // by all employees is returned.                                    *
+    //*******************************************************************
 
-        System.out.printf("According to your survey, an average of %,.2f people \n rode the %s " +
-                "per" +
-                " day.", avgRiders, muniLine);
+    public static int getDaysMissed(int employees)
+    {
+        int days_missed, emp_no=1;
+        int total_days_missed = 0;
+
+        Scanner scan = new Scanner (System.in);
+
+        do {
+            System.out.printf("Days missed by employee # %d : ", emp_no);
+            days_missed = scan.nextInt();
+            for(emp_no=1; emp_no<=employees; emp_no++)
+                total_days_missed += days_missed;
+        }while(emp_no<=employees);
+
+        return total_days_missed;
     }
-}
-/* /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA 2.app/Contents/lib/idea_rt.jar=53276:/Applications/IntelliJ IDEA 2.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Users/lianneachilles/Code/cs111b/out/production/cs111b com.company.Main
-Welcome to the Muni Ridership Calculator.
-Which Muni line did you survey? J-Church
-How many days did you survey ridership? 5
-How many riders did you count? 23456
-According to your survey, an average of 4,691.20 people
- rode the J-Church per day.
-Process finished with exit code 0
 
-/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA 2.app/Contents/lib/idea_rt.jar=53299:/Applications/IntelliJ IDEA 2.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Users/lianneachilles/Code/cs111b/out/production/cs111b com.company.Main
-Welcome to the Muni Ridership Calculator.
-Which Muni line did you survey? N-Judah
-How many days did you survey ridership? 5
-How many riders did you count? 500
-According to your survey, an average of 100.00 people
- rode the N-Judah per day.
-Process finished with exit code 0
+    //*******************************************************************
+    // Function showAvgDaysMissed. Takes two arguments: the number of
+    // employees in the company and the total number of days absent for
+    // all employees during the year. Prints the average number of days
+    // missed per employee.
 
-*/
+    public static void showAvgDaysMissed(int employees, int daysAbsent) {
+        double avg_days_missed;
+        avg_days_missed = (double) daysAbsent / employees;
+        System.out.printf("The average number of days missed per employee is %.1f ", avg_days_missed);
+    }
+} // End of class Main
