@@ -10,14 +10,6 @@ public class Main
 {
     static Scanner keyIn = new Scanner(System.in);
 
-    // int no_names;
-    // String names[];
-    // Ask how many names?
-    // Append those names to an array.
-    // Print names in reverse order.
-    // Print name with most characters.
-
-
     public static void main(String args[]) {
 //        // define variables
         String names[];
@@ -65,3 +57,41 @@ public class Main
     } // End of function getLongestName
 
 } // End of class Main
+
+///Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA 2.app/Contents/lib/idea_rt.jar=54877:/Applications/IntelliJ IDEA 2.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Users/lianneachilles/Code/cs111b/out/production/cs111b com.company.Main
+//How many names do you want to enter? 3
+//Enter a name:
+//Jean
+//Enter a name:
+//Lianne
+//Enter a name:
+//Odie
+//Here are the names you entered, in reverse order:
+//
+//Odie
+//Lianne
+//Jean
+//
+//Here is the longest name, with 6 characters: Lianne
+//Process finished with exit code 0
+
+
+///Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA 2.app/Contents/lib/idea_rt.jar=54988:/Applications/IntelliJ IDEA 2.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Users/lianneachilles/Code/cs111b/out/production/cs111b com.company.Main
+//How many names do you want to enter? 4
+//Enter a name:
+//Bill
+//Enter a name:
+//Michiko
+//Enter a name:
+//Lianne
+//Enter a name:
+//Emi
+//Here are the names you entered, in reverse order:
+//
+//Emi
+//Lianne
+//Michiko
+//Bill
+//
+//Here is the longest name, with 7 characters: Michiko
+//Process finished with exit code 0
