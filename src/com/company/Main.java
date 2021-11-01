@@ -1,6 +1,7 @@
-/* Names and Ages Program CS 111B Assignment 2
+/* CS 111B Exercise for Chapter 7: NameArray
    Written by Lianne Achilles
-   Determines, for two people, if neither, one, or both of them are between 18-65
+   This program asks the user for number of names they would like to input. Then asks them to input
+   the names. Then displays the names in reverse order and prints the longest name.
 */
 package com.company;
 import java.util.Scanner;
@@ -9,59 +10,58 @@ public class Main
 {
     static Scanner keyIn = new Scanner(System.in);
 
-    // would love a person class with name and age properties
+    // int no_names;
+    // String names[];
+    // Ask how many names?
+    // Append those names to an array.
+    // Print names in reverse order.
+    // Print name with most characters.
 
-    // get name and age inputs (no args)
 
-    // check if age is in 18-65 range (takes name1, name2, age1, age2 args)
-    // return Neither, Both, or one
-    public static void main(String args[])
-    {
-        // define variables
-        String name1, name2;          // names of person1 and person2
-        int age1, age2;               // ages of person1 and person2
-        boolean workingAge1, workingAge2;
+    public static void main(String args[]) {
+//        // define variables
+        String names[];
+        String longestName;
+        int size, i;
 
-        // get name and age inputs
-        System.out.println("Please enter first person's name: ");
-        name1 = keyIn.nextLine();
-        System.out.printf ("Please enter %s's age: ", name1);
-        age1 = keyIn.nextInt();
+        System.out.print("How many names do you want to enter? ");
+        size = keyIn.nextInt();
         keyIn.nextLine();  // read the newline
-        // check if age is in 18-65 range
-        workingAge1 = checkAgeRange(age1);
 
-        System.out.println("Please enter second person's name: ");
-        name2 = keyIn.nextLine();
-        System.out.printf ("Please enter %s's age: ", name2);
-        age2 = keyIn.nextInt();
-        keyIn.nextLine();  // read the newline
-        // check if age is in 18-65 range
-        workingAge2 = checkAgeRange(age2);
+        names = new String[size];
 
-        if (workingAge1 && workingAge2) {
-            System.out.println("Both people are between 18 and 65.");
-        } else if (!(workingAge1 || workingAge2)) {
-            System.out.println("Neither person is between 18 and 65.");
-        } else if (!workingAge1 && workingAge2) {
-            System.out.printf("%s is between 18 and 65, but %s is not.", name2, name1);
-        } else if (workingAge1 && !workingAge2) {
-            System.out.printf("%s is between 18 and 65, but %s is not.", name1, name2);
+        // create the array
+        for (i=0; i < size; i++) {
+            System.out.println("Enter a name: ");
+            names[i] = keyIn.nextLine();
         }
+        // print array in reverse order
+        System.out.println("Here are the names you entered, in reverse order:\n");
+        for (i=names.length - 1; i >= 0; i--)
+            System.out.print(names[i] + "\n");
+
+        //
+        longestName = getLongestName(names);
+        System.out.printf("\nHere is the longest name, with %d characters: %s",
+                longestName.length(), longestName);
     } // End of main function
 
     //*******************************************************************
-    // Function checkAgeRange accepts an age and returns a boolean on   *
-    // whether or not the age is within 18-65 years old.                *
+    // Function getLongestName accepts an array of names and returns    *
+    // the longest one.                                                 *
     //*******************************************************************
 
-    public static boolean checkAgeRange(int age) {
+    static String getLongestName(String names[]) {
 
-        boolean workingAge;
+        int index = 0;
+        int nameLength = names[0].length();
 
-        workingAge = age < 65 && age >= 18;
-
-        return workingAge;
-    } // End of function checkAgeRange
+        for(int i=1; i< names.length; i++) {
+            if(names[i].length() > nameLength) {
+                index = i; nameLength = names[i].length();
+            }
+        }
+        return names[index];
+    } // End of function getLongestName
 
 } // End of class Main
