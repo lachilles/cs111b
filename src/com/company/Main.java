@@ -1,101 +1,72 @@
-/* Lianne Achilles
-   CS 111B Assignment 3
-   Count Words and display longest word
-*/
 package com.company;
-import java.util.Scanner;
 
-public class Main
+/* AvgNumsFromCommandLine
+   Exercise 4, Chapter 9, CS 111B, by Lianne Achilles
+
+   Inputs numbers on the command line, and then
+   stores them into an array,and outputs the
+   average number on the screen.
+*/
+
+class Main
 {
-    public static void main(String[] args) {
-        String phrase;
-        int numWords;
+    public static void main(String[] args)
+    {
+        double[] numbers;
+        int i=0, count;
+        double num, sum=0.00, average=0.00;
 
-        phrase = inputPhrase();
+        if(args == null || args.length < 1)
+        {  // if nothing on command line
+            System.out.println("usage: java Main 5 4 2 8\nTo average the numbers 5, 4, 2 and 8");
+            return;  // exit the program
+        }
+        count = args.length;
+        // allocate space for all the command-line arguments
+        // to go into the array of numbers
+        numbers = new double[count];
 
-        numWords = analyzePhrase(phrase);
+        for(String arg : args)
+        { // for each command line argument:
+            num = Double.parseDouble(arg); // convert to numeric format
+            numbers[i] = num;
+            i++;
+            sum += num;
+        }
 
-        System.out.println("Your phrase has " + numWords + " words in it.");
+        System.out.println("Here is your array of numbers: \n");
+        outputArray(numbers, count);
+        average = sum / count;
+        System.out.printf("\nand their average is: %.4f ", average);
+
+    }
+
+    // Output the first numElements of the nums array,
+    // separated by commas:
+    public static void outputArray(double[] nums, int numElements)
+    {
+        System.out.print(nums[0]); // output first value
+        // output rest of array with commas:
+        for (int i = 1; i < numElements; i++)
+            System.out.print(", " + nums[i]);
         System.out.println();
-    }  // end of main function
+    } // end of outputArray
+}
 
-    /**
-     * inputPhrase method
-     * Ask the user to input a phrase, and make sure it is at least 5 characters long.
-     * (Uses recursion to make the user input a new phrase if it is too short.)
-     *
-     * @return the phrase
-     */
+/* Sample output:
 
-    private static String inputPhrase() {
-        Scanner keyIn = new Scanner(System.in);
-        System.out.print("Please enter a phrase all on one line, \n" +
-                "with just one space separating each word, \n" +
-                "and no spaces at the beginning or end of the phrase. \n");
-        String phrase = keyIn.nextLine();
-        if (phrase.length() < 5) {
-            System.out.print("Your phrase must contain at least 5 characters. \n");
-            phrase = inputPhrase();
-        }
-        return phrase;
-    }  // end of inputPhrase
+>  java -classpath /Users/lianneachilles/Code/cs111b/out/production/cs111b com.company.Main 9 18 9 3
+Here is your array of numbers:
 
-    /**
-     * analyzePhrase method
-     * Count the number of words in a given string, and determine its longest word.
-     * Assume the string is well formed and doesn't have leading
-     * or trailing spaces, or multiple spaces in a row.
-     * Return the number of words.
-     * Output the longest word on the screen (console).
-     *
-     * @param phrase to analyze
-     * @return number of words in str
-     */
+9.0, 18.0, 9.0, 3.0
 
-    private static int analyzePhrase(String phrase) {
-        int i, len, temp_c = 0, temp_d = 0, numWords = 1;
-        int maxWordLength = 0;
-        String longestWord = null;
-        if (phrase.indexOf(' ') == -1) {  // handle the case of one
-            // word phrase like "Hello"
-            longestWord = phrase;
-        } else {
-            for (i = 0; i < phrase.length(); i++) {
-                char letter = phrase.charAt(i);
-                if (letter == ' ' || letter == '.') {
-                    temp_d = i;  // get ending index of word
-                    String curWord = phrase.substring(temp_c, temp_d);
-                    len = temp_d - temp_c;  // subtract beginning index from ending to get length of
-                    // word
-                    if (len > maxWordLength) {
-                        longestWord = curWord; // if length of current word
-                        // is longer than the maxWordLength previously seen, then replace the longestWord
-                        maxWordLength = longestWord.length(); // set len to be the new
-                    }
-                    temp_c = temp_d + 1;  // set starting index of new word to ending index of last word
-                    numWords += 1;  // increment wordcounter
-                }
-            }
-        }
-        System.out.printf("\nThe longest word in your phrase is %s with %d characters. ",
-                longestWord, longestWord.length());
-        return numWords;
-    }  // end of analyzePhrase  function
-} // end of main class
+and their average is: 9.7500
 
-/* Sample Output:
+> java -classpath /Users/lianneachilles/Code/cs111b/out/production/cs111b com.company.Main 2.5 3 2.5 43.222 3
+Here is your array of numbers:
 
-Please enter a phrase all on one line,
-with just one space separating each word,
-and no spaces at the beginning or end of the phrase.
-Barking Up The Wrong Tree
+2.5, 3.0, 2.5, 43.222, 3.0
 
-The longest word in your phrase is Barking with 7 characters. Your phrase has 5 words in it.
+and their average is: 10.8444
 
-Please enter a phrase all on one line,
-with just one space separating each word,
-and no spaces at the beginning or end of the phrase.
-You Can't Judge a Book By Its Cover
-
-The longest word in your phrase is Can't with 5 characters. Your phrase has 8 words in it.
 */
