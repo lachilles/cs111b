@@ -12,30 +12,37 @@ class ElectricCar extends Vehicle
         implements LimitedRange
 {
     // declare instance variables
-    private int range;
+    protected int maxRange;  // How far can go when fully charged
+    protected int currentRange;  // How far can go with current charge
 
     // // constructor definitions:
     // use inherited constructor to store make and model
     // then store range
-    public ElectricCar(String make, String model, int range)
+    public ElectricCar(String make, String model, int maxRange)
     {
         // call Vehicle constructor with parameters:
         super(make, model);
+        this.maxRange = maxRange;
+        currentRange = maxRange;
     }
 
     @Override
     public boolean travel(int distance)
     {
-        if (distance <= this.range)
-            System.out.println("Zoom!\n");
-            range = this.range - distance;
+        if (currentRange >= distance)
+        {
+            currentRange -= distance;
+            System.out.println("Zoom!");
             return true;
+        }
+        else
+            return false;
     }
 
     // NEW: This getCurrentRange method is required by
     // the LimitedRange interface we are implementing.
     @Override
     public int getCurrentRange() {
-        return range;
+        return currentRange;
     }
 }

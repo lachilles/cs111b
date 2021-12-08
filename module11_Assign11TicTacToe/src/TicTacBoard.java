@@ -1,13 +1,9 @@
-/* Craig Persiko
+/* Lianne Achilles
    TicTacBoard.java
-   Starter code for Assignment 11 in CS 111B
+   Assignment 11 CS 111B
 
    A class representing a Tic Tac Toe board -
    both its user interface and its logical functionality.
-
-   YOUR JOB IS TO WRITE THE BODY OF THE checkWinner METHOD BELOW
-   SO THAT THE GAME STOPS WHEN SOMEONE WINS, OR WHEN THE BOARD IS FULL.
-   LIKE SHOWN IN THE SAMPLE OUTPUT AT BOTTOM.
 */
 
 import java.util.Scanner;
@@ -16,6 +12,7 @@ public class TicTacBoard
 {
     private char[][] board;  // 2-D array of characters
     private char curPlayer; // the player whose turn it is (X or O)
+    private int moveCount = 0;
 
     // Constructor: board will be size x size
     public TicTacBoard(int size)
@@ -102,109 +99,184 @@ public class TicTacBoard
         }while(invalid);
 
         board[row][col] = curPlayer;
-
-        if(curPlayer == 'X')
-            curPlayer = 'O';
-        else
-            curPlayer = 'X';
     }
 
     // If the game is over, print who won (if anyone),
     // and return true.  If the game is not over, return false.
     public boolean checkWinner()
     {
-        // YOUR CODE GOES HERE
+        // declare variables
+        boolean foundWinner = false;
+
+        // increment moveCounter
+        moveCount += 1;
+
+        // check end conditions
+        // when moveCount = 9
+        if (moveCount == 9)
+        {
+            System.out.println("Nobody can win now. Game ends in a draw.");
+            return true;
+        }
+
+        // check 3 rows and check if there's 3 in a row.
+        for(int row = 0; row < board.length; row++)
+        {
+            foundWinner = checkRows(row, curPlayer);
+            if (foundWinner)
+            {
+                System.out.println("Player " + curPlayer + " wins!");
+                return true;
+            }
+        }
+        // loop through 3 columns and check if there's 3 in a row.
+        for(int col = 0; col < board.length; col++)
+        {
+            foundWinner = checkColumns(col, curPlayer);
+            if (foundWinner)
+            {
+                System.out.println("Player " + curPlayer + " wins!");
+                return true;
+            }
+        }
+        // check 2 diags
+        if (checkLDiag(curPlayer) || checkRDiag(curPlayer))
+        {
+            System.out.println("Player " + curPlayer + " wins!");
+            return true;
+        }
+
+        // swap players after done checking for winner.
+        if(curPlayer == 'X')
+            curPlayer = 'O';
+        else
+            curPlayer = 'X';
         return false; // The game never ends. CHANGE THIS
+    }
+
+    public boolean checkColumns(int col, char curPlayer)
+    {
+        int row =0;
+        if(board[row][col] == curPlayer &&
+                board[row+1][col] == curPlayer &&
+                board[row+2][col] == curPlayer)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean checkRows(int row, char curPlayer)
+    {
+        int col =0;
+        if(board[row][col] == curPlayer &&
+                board[row][col+1] == curPlayer &&
+                board[row][col+2] == curPlayer)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean checkLDiag(char curPlayer)
+    {
+        // left diagonal
+        if(board[0][0] == curPlayer &&
+                board[1][1] == curPlayer &&
+                board[2][2] == curPlayer)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean checkRDiag(char curPlayer)
+    {
+        // right diagonal
+        if(board[0][2] == curPlayer &&
+                board[1][1] == curPlayer &&
+                board[2][0] == curPlayer)
+        {
+            return true;
+        }
+        else
+            return false;
     }
 }
 
 /* Sample Output:
-
  | |
 -----
  | |
 -----
  | |
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-0 0
-
-X| |
------
- | |
------
- | |
-
-It is now O's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-2 0
-
-X| |
------
- | |
------
-O| |
 
 It is now X's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
 1 1
 
-X| |
+ | |
 -----
  |X|
 -----
-O| |
+ | |
 
 It is now O's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
-2 1
+0 0
 
-X| |
+O| |
 -----
  |X|
 -----
-O|O|
+ | |
 
 It is now X's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
-2 2
+0 2
 
-X| |
+O| |X
 -----
  |X|
 -----
-O|O|X
+ | |
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+1 0
+
+O| |X
+-----
+O|X|
+-----
+ | |
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 0
+
+O| |X
+-----
+O|X|
+-----
+X| |
 
 Player X wins!
 
-************************************************
-*********** Running the program again **********
-************************************************
-
  | |
 -----
  | |
 -----
  | |
 
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
--1 1
-Invalid entry: row and column must both be between 0 and 2 (inclusive).
-Please try again.
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-0 3
-Invalid entry: row and column must both be between 0 and 2 (inclusive).
-Please try again.
 It is now X's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
@@ -219,232 +291,90 @@ So 0 0 would be the top left, and 0 2 would be the top right.
 It is now O's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
-1 1
-Invalid entry: Row 1 at Column 1 already contains: X
-Please try again.
-It is now O's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-2 0
-
- | |
------
- |X|
------
-O| |
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-0 0
-
-X| |
------
- |X|
------
-O| |
-
-It is now O's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-2 2
-
-X| |
------
- |X|
------
-O| |O
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-0 2
-
-X| |X
------
- |X|
------
-O| |O
-
-It is now O's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-2 1
-
-X| |X
------
- |X|
------
-O|O|O
-
-Player O wins!
-
-************************************************
-*********** Running the program again **********
-************************************************
-
- | |
------
- | |
------
- | |
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-2 2
-
- | |
------
- | |
------
- | |X
-
-It is now O's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
 0 0
 
 O| |
 -----
- | |
------
- | |X
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-0 2
-
-O| |X
------
- | |
------
- | |X
-
-It is now O's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-1 1
-
-O| |X
------
- |O|
------
- | |X
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-1 2
-
-O| |X
------
- |O|X
------
- | |X
-
-Player X wins!
-
-************************************************
-*********** Running the program again **********
-******************************************************
-* Following is Extra Credit: determine if unwinnable *
-******************************************************
-
- | |
------
- | |
+ |X|
 -----
  | |
 
 It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-0 0
-
-X| |
------
- | |
------
- | |
-
-It is now O's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-2 0
-
-X| |
------
- | |
------
-O| |
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-0 2
-
-X| |X
------
- | |
------
-O| |
-
-It is now O's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
 0 1
 
-X|O|X
+O|X|
+-----
+ |X|
 -----
  | |
------
-O| |
-
-It is now X's turn.
-Please enter your move in the form row column.
-So 0 0 would be the top left, and 0 2 would be the top right.
-2 2
-
-X|O|X
------
- | |
------
-O| |X
 
 It is now O's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
-1 1
+2 1
 
-X|O|X
+O|X|
+-----
+ |X|
 -----
  |O|
------
-O| |X
 
 It is now X's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
-2 1
+1 0
 
-X|O|X
+O|X|
+-----
+X|X|
 -----
  |O|
------
-O|X|X
 
 It is now O's turn.
 Please enter your move in the form row column.
 So 0 0 would be the top left, and 0 2 would be the top right.
 1 2
 
+O|X|
+-----
+X|X|O
+-----
+ |O|
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 0
+
+O|X|
+-----
+X|X|O
+-----
+X|O|
+
+It is now O's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+0 2
+
+O|X|O
+-----
+X|X|O
+-----
+X|O|
+
+It is now X's turn.
+Please enter your move in the form row column.
+So 0 0 would be the top left, and 0 2 would be the top right.
+2 2
+
+O|X|O
+-----
+X|X|O
+-----
 X|O|X
------
- |O|O
------
-O|X|X
 
 Nobody can win now. Game ends in a draw.
 

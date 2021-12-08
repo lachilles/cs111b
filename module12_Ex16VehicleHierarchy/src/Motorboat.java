@@ -12,7 +12,8 @@ class Motorboat extends Vehicle
         implements LimitedRange
 {
     // declare instance variables
-    private int range;
+    protected int maxRange; // How far can go with full gas tank
+    protected int currentRange;  // How far on current gas
 
     // // constructor definitions:
     // use inherited constructor to store make and model
@@ -21,21 +22,27 @@ class Motorboat extends Vehicle
     {
         // call Vehicle constructor with parameters:
         super(make, model);
+        this.maxRange = maxRange;
+        currentRange = maxRange;
     }
 
     @Override
     public boolean travel(int distance)
     {
-        if (distance <= this.range)
-            System.out.print("Wisshhh!\n");
-        this.range = this.range - distance;
-        return true;
+        if (currentRange >= distance)
+        {
+            currentRange -= distance;
+            System.out.println("Wisshhh!");
+            return true;
+        }
+        else
+            return false;
     }
 
     // NEW: This getCurrentRange method is required by
     // the LimitedRange interface we are implementing.
     @Override
     public int getCurrentRange() {
-        return this.range;
+        return currentRange;
     }
 }
