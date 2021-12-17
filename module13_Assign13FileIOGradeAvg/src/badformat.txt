@@ -1,0 +1,5 @@
+Biden 85 90
+Trump 50 70 75
+Obama 90 95 98 97
+Bush 80 70 75 85
+Clinton 90 95 85 99Bush 85 95 90 94
