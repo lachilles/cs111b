@@ -4,7 +4,27 @@
    This program read grades from an input file, and averages them in an output file.
 */
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
+
+
+// enum is a bounded list of value
+enum Prompt {
+    WELCOME("Welcome to the Grade Average Calculator.\n"),
+    ENTERI("Please enter the name of a file to input: "),
+    TRY_AGAIN("Please try again.");
+
+    Prompt(String msg) {
+        this.msg = msg;
+    };
+
+    private String msg;
+
+    public void print() {
+        System.out.println(msg);
+    }
+}
+
 
 class Main<NUM_SCORES>
 {
@@ -18,13 +38,16 @@ class Main<NUM_SCORES>
         boolean loopNeeded;
         String inFilePath, outFileName;
 
-        System.out.println("Welcome to the Grade Average Calculator.\n");
+        // Add prompter class and move println to there.
+        Prompt.WELCOME.print();
+//        System.out.println("Welcome to the Grade Average Calculator.\n");
 
         // Set up keyboard input reader:
         keyIn = new Scanner(System.in);
 
         do {
-            System.out.println("Please enter the name of a file to input: ");
+            Prompt.ENTERI.print();
+//            System.out.println("Please enter the name of a file to input: ");
             inFilePath = keyIn.nextLine();
             try
             {
@@ -37,7 +60,7 @@ class Main<NUM_SCORES>
                 System.out.println("Unable to open file: " + inFilePath);
                 loopNeeded = true;
             }
-        }while(loopNeeded);
+        } while(loopNeeded);
 
         do
         {
@@ -57,42 +80,52 @@ class Main<NUM_SCORES>
                 System.out.println("Unable to open file: " + outFileName);
                 loopNeeded = true;
             }
-            catch(Exception e)
+            catch(BadFormatException e)
             {
-                System.out.printf("The file %s isn't in the right format: \n" +
-                        "it should have 1 name followed by 4 numbers on each line,\n" +
-                        "separated by spaces.".format(inFilePath));
-                System.out.println(e.getMessage() + "4 scores should follow each name, " +
-                        "with spaces in between.\nGrades could not be averaged.");
+                // add a method for handle output expression
+                handleBadFormatException(inFilePath, e);
             }
-        }while(loopNeeded);
+        } while(loopNeeded);
 
     }
 
-    private static void averageTestScores(Scanner inFile, PrintWriter outFile) throws Exception
+    private static void handleBadFormatException(String inFilePath, BadFormatException e) {
+        System.out.printf("The file %s isn't in the right format: \n" +
+                "it should have 1 name followed by 4 numbers on each line,\n" +
+                "separated by spaces.".format(inFilePath));
+        System.out.println(e.getMessage() + "4 scores should follow each name, " +
+                "with spaces in between.\nGrades could not be averaged.");
+    }
+
+    private static void averageTestScores(Scanner inFile, PrintWriter outFile) throws BadFormatException
     {
         String lineIn; // To store one line at a time from the file
         String[] lineData; // To store an array of data from one line of the file
         String testTaker;
-        double averageTestScore = 0;
+        double averageTestScore = 0, total = 0;
 
         while (inFile.hasNextLine()) // while there are lines in the file
         {
             lineIn = inFile.nextLine();
             lineData = lineIn.split(" "); // split on spaces
             if(lineData.length < 5) { // array should have 5 items (columns of data)
-                throw new Exception("5 values should be in each line, separated by spaces, " +
+                throw new BadFormatException("5 values should be in each line, separated by spaces, " +
                         "beginning with the name of the test taker followed by 4 test scores.");}
             testTaker = lineData[0];
-            averageTestScore =
-                    (Double.parseDouble(lineData[1]) + Double.parseDouble(lineData[2]) +
-                            Double.parseDouble(lineData[3]) + Double.parseDouble(lineData[4]))
-                            / NUM_SCORES;
+//            total = (Double.parseDouble(lineData[1]) + Double.parseDouble(lineData[2]) +
+//                    Double.parseDouble(lineData[3]) + Double.parseDouble(lineData[4]));
+            total = Arrays.stream(lineData).skip(1).map(x -> Double.parseDouble(x)).sum();
+            averageTestScore = total / NUM_SCORES;
             outFile.println(testTaker + " " + averageTestScore);
         }
         outFile.close();
     }
+}
 
+class BadFormatException extends Exception {
+    BadFormatException(String msg) {
+        super(msg);
+    }
 }
 
 /*  *****  Sample Output  *****
